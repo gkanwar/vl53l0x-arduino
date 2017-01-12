@@ -61,6 +61,13 @@ bool VL53L0X::init(bool io_2v8)
 {
   // VL53L0X_DataInit() begin
 
+  Wire.begin();
+  // check that we connected
+  uint8_t x = readReg(0xC0); // should always give 0xEE
+  if (x != 0xEE) {
+    return false;
+  }
+  
   // sensor uses 1V8 mode for I/O by default; switch to 2V8 mode if necessary
   if (io_2v8)
   {
