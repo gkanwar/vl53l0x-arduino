@@ -838,6 +838,20 @@ uint16_t VL53L0X::readRangeContinuousMillimeters(void)
   return range;
 }
 
+// Reads continuous range without blocking. Returns:
+// * The value in millimeters if successful,
+// * 65535 if still waiting for a response
+uint16_t VL53L0X::readRangeContinuousNoBlockMillimeters(void)
+{
+  if ((readReg(RESULT_INTERRUPT_STATUS) & 0x07) == 0)
+  {
+    return 65535;
+  }
+  else {
+    return readRangeContinuousMillimeters();
+  }
+}
+
 // Performs a single-shot range measurement and returns the reading in
 // millimeters
 // based on VL53L0X_PerformSingleRangingMeasurement()
